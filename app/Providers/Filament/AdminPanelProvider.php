@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,6 +33,14 @@ class AdminPanelProvider extends PanelProvider
             ->profile(isSimple: false)
             ->colors([
                 'primary' => Color::Red,
+            ])
+            ->userMenuItems([
+                'telescope' => Action::make('telescope')
+                    ->label('Telescope')
+                    ->icon('heroicon-o-bug-ant')
+                    ->url(fn () => config('telescope.enabled') ? route('telescope') : null)
+                    ->visible(fn () => config('telescope.enabled') && auth()->user()?->can('viewTelescope'))
+                    ->openUrlInNewTab(),
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
