@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use App\Filament\Client\Pages\Register;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -29,7 +30,7 @@ class ClientPanelProvider extends PanelProvider
             ->id('client')
             ->path('')
             ->login()
-            ->registration()
+            ->registration(Register::class)
             ->passwordReset()
             ->emailVerification()
             ->emailChangeVerification()
