@@ -7,6 +7,8 @@ services:
         WWWUSER: ${WWWUSER:-1000}
         WWWGROUP: ${WWWGROUP:-1337}
         APP_VERSION: ${APP_VERSION:-unknown}
+        APP_COMMIT: ${APP_COMMIT:-unknown}
+        APP_BUILD_TIME: ${APP_BUILD_TIME:-unknown}
     image: edzero/app:latest
     depends_on:
       - pgsql
@@ -18,6 +20,8 @@ services:
     environment:
       SUPERVISOR_PHP_USER: www-data
       APP_VERSION: ${APP_VERSION:-unknown}
+      APP_COMMIT: ${APP_COMMIT:-unknown}
+      APP_BUILD_TIME: ${APP_BUILD_TIME:-unknown}
       APP_ENV: ${APP_ENV}
       APP_KEY: ${APP_KEY}
       APP_DEBUG: ${APP_DEBUG}

@@ -32,21 +32,22 @@ if [ -d "$STORAGE_DIR" ] && [ -d "$CACHE_DIR" ]; then
     chmod -R ug+rwX "$STORAGE_DIR" "$CACHE_DIR"
 fi
 
-# Write app version if applicable
+# Write app version info as JSON
 APP_VERSION=${APP_VERSION:-unknown}
-VERSION_FILE="/var/www/html/storage/app/private/version.txt"
+APP_COMMIT=${APP_COMMIT:-unknown}
+APP_BUILD_TIME=${APP_BUILD_TIME:-unknown}
+VERSION_FILE="/var/www/html/storage/app/private/version.json"
 
 mkdir -p "$(dirname "$VERSION_FILE")"
 
-if [ -n "$APP_VERSION" ]; then
-    VERSION="$APP_VERSION"
-elif [ -d /var/www/html/.git ]; then
-    VERSION=$(git -C /var/www/html describe --tags --always 2>/dev/null || echo "unknown")
-else
-    VERSION="unknown"
-fi
+cat > "$VERSION_FILE" <<EOF
+{
+  "version": "$APP_VERSION",
+  "commit": "$APP_COMMIT",
+  "build_time": "$APP_BUILD_TIME"
+}
+EOF
 
-echo "$VERSION" > "$VERSION_FILE"
 chown www-data:www-data "$VERSION_FILE"
 
 # Execute passed command or fallback to supervisord
